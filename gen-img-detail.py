@@ -24,17 +24,31 @@ if not hasattr(mapnik,'mapnik_version') and not mapnik.mapnik_version() >= 600:
 print "Mapnik Version: ",mapnik.mapnik_version(),"\n"
 
 if __name__ == "__main__":
-    try:
-        mapfile = os.environ['MAPNIK_MAP_FILE']
-    except KeyError:
-        mapfile = "osm.xml"
     
-    map_uri = "detail.png"
+    map_name = "detail"
 
     #---------------------------------------------------
     #  Change this to the bounding box you want
     #
     bounds = (9.932, 53.538, 10.01, 53.56)
+    dpi=300	
+    # 8cm auf der Karte sind 1km in der Natur ; 1km=1000m=100000cm; 4/10000
+    massstab=8.0/100000.0 # 1cm
+    try: 
+      arg=sys.argv[1]
+      if (arg=="ue"):
+	bounds=(9.83, 53.46, 10.1, 53.62)
+	massstab=4.0/100000.0 # 4cm auf der Karte sind 1km in der Natur
+        map_name="uebersicht";
+      if (arg=="ue-s"):
+        bounds=(9.9818,53.5415,10.008,53.555)
+	massstab=4.0/100000.0 # 4cm auf der Karte sind 1km in der Natur
+        map_name="uebersicht-s"
+      if (arg=="de-s"):
+	bounds=(9.9818,53.5415,10.008,53.555)
+        map_name="detail-s"  
+    except IndexError:
+      pass
     #---------------------------------------------------
     bbox = mapnik.Box2d(*bounds)
 
@@ -44,19 +58,17 @@ if __name__ == "__main__":
     # the Map when we call `zoom_to_box()`
     transform = mapnik.ProjTransform(longlat,merc)
     merc_bbox = transform.forward(bbox)
-    print  merc_bbox.width(), merc_bbox.height(); 
-    dpi=300	
-    # 4cm auf der Karte sind 1km in der Natur ; 1km=1000m=100000cm; 4/10000
-    massstab=8.0/100000.0 # 1cm
+    print  "Groesse in m %dx%d" % (merc_bbox.width(), merc_bbox.height()); 
+
     # Punkte=( Breite auf der Karte in cm      )/2.54*dpi  
     #        ((Breite Natur in cm     )*massstab))/2.54*dpi
     #        ((merc_bbox.width()*10)*4/100000)/2.54*dpi     
     # Breite/Höhe in cm
-    print ((merc_bbox.width()*100)*massstab)
-    print ((merc_bbox.height()*100)*massstab)
+    print "Breite in cm %d"%((merc_bbox.width()*100)*massstab)
+    print "Hoehe in cm %d"%((merc_bbox.height()*100)*massstab)
     # Breite/Höhe in Punkten
-    print ((merc_bbox.width()*100)*massstab)/2.54*dpi 
-    print ((merc_bbox.height()*100)*massstab)/2.54*dpi    
+    print "Breite in Punkten %d " % (((merc_bbox.width()*100)*massstab)/2.54*dpi )
+    print "Hoehe in Punkte %d " % (((merc_bbox.height()*100)*massstab)/2.54*dpi    )
     #
     imgx = int(((merc_bbox.width()*100)*massstab)/2.54*dpi)
     imgy = int(((merc_bbox.height()*100)*massstab)/2.54*dpi)
@@ -94,9 +106,9 @@ if __name__ == "__main__":
     sys.stdout.write('Map scale denominator: %s\n' % m.scale_denominator())
     im = mapnik.Image(imgx,imgy)
     mapnik.render(m, im)
-    im.save(map_uri,'png')
+    im.save(map_name+".png",'png')
     
-    sys.stdout.write('output image to %s!\n' % map_uri)
+    sys.stdout.write('output image to %s.png!\n' % map_name)
     
     # Note: instead of creating an image, rendering to it, and then 
     # saving, we can also do this in one step like:
@@ -105,7 +117,7 @@ if __name__ == "__main__":
     # And in Mapnik >= 0.7.0 you can also use `render_to_file()` to output
     # to Cairo supported formats if you have Mapnik built with Cairo support
     # For example, to render to pdf or svg do:
-    mapnik.render_to_file(m, "detail.pdf")
-    mapnik.render_to_file(m, "detail.svg")
+    mapnik.render_to_file(m, map_name+".pdf")
+    mapnik.render_to_file(m, map_name+".svg")
     
 
