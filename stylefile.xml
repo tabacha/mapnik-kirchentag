@@ -5367,7 +5367,7 @@
             <Parameter name="password">bla</Parameter>
             <Parameter name="port">5432</Parameter>
             <Parameter name="table">
-      (select way,highway,ref,char_length(ref) as length
+      (select way,highway,ref,length(ref) as length
        from planet_osm_roads
        where highway in ('motorway','trunk','primary')
          and ref is not null
@@ -5406,13 +5406,9 @@
             <Parameter name="password">bla</Parameter>
             <Parameter name="port">5432</Parameter>
             <Parameter name="table">
-      (select way,highway,aeroway,name,ref,char_length(ref) as length,
-       case when bridge in ('yes','true','1') then 'yes'::text else bridge end as bridge
-       from planet_osm_line
-       where waterway IS NULL
-         and leisure IS NULL
-         and landuse IS NULL
-         and (name is not null or ref is not null)
+      (select way,highway,aeroway,name,ref,length,bridge
+       from road_text
+       where name is not null or ref is not null
       ) as roads
       </Parameter>
             <Parameter name="type">postgis</Parameter>
