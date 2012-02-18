@@ -1,0 +1,1 @@
+select w.name,MAX(ST_Length(w.way))/length(w.name) as platz FROM road_text w WHERE w.highway is not null GROUP BY name ORDER BY platz limit 2000;
