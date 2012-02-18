@@ -1,13 +1,24 @@
-German Map Style for Mapnik
+Kirchentag  Map Style for Mapnik
 ---------------------------
 
-This style closely follows the "original" Mapnik style 
+Stylefile und Helper-Skripte für den Hamburger Kirchentag 2013.
+
+Mehr Infos bei Sven Anders
+
+kirchentag-landkarte-2013@sven.anders.im
+
+
+
+
+
+This style closely follows the "German" Mapnik style which follows the original
+Mapnikstyle 
 (svn.openstreetmap.org/applications/rendering/mapnik). All
 instructions and helper programs from that directory apply
 equally to here, and changes made to that style could, and
 often should, be patched in here as well. 
 
-This style has been developed by Beate Braun for her Bachelor
+This German Style has been developed by Beate Braun for her Bachelor
 Thesis at HFT Stuttgart, with support from Geofabrik. The 
 style is made freely available here for anyone to use, subject
 to any constraints possibly inherited from the original Mapnik
