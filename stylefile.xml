@@ -2992,12 +2992,29 @@
             <Filter>(([highway]='unclassified') or ([highway]='residential'))</Filter>
             <MinScaleDenominator>2500</MinScaleDenominator>
             <MaxScaleDenominator>6250</MaxScaleDenominator>
-            <TextSymbolizer fill="rgb(0,0,0)" fontset-name="book-fonts" halo-radius="2" placement="line" size="18" spacing="300">[name]</TextSymbolizer>
+            <TextSymbolizer fill="rgb(0,0,0)" fontset-name="book-fonts" halo-radius="2" placement="line" size="16" spacing="300">[name]</TextSymbolizer>
         </Rule>
         <Rule>
             <Filter>(([highway]='unclassified') or ([highway]='residential'))</Filter>
             <MaxScaleDenominator>2500</MaxScaleDenominator>
-            <TextSymbolizer fill="rgb(0,0,0)" fontset-name="book-fonts" halo-radius="2" placement="line" size="22" spacing="400">[name]</TextSymbolizer>
+            <TextSymbolizer fill="rgb(0,0,0)" fontset-name="book-fonts" halo-radius="2" placement="line" size="20" spacing="400">[name]</TextSymbolizer>
+        </Rule>
+        <Rule>
+            <Filter>([highway]='living_street')</Filter>
+            <MinScaleDenominator>6250</MinScaleDenominator>
+            <MaxScaleDenominator>12500</MaxScaleDenominator>
+            <TextSymbolizer fill="rgb(0,0,0)" fontset-name="book-fonts" halo-radius="2" placement="line" size="15" spacing="300">[name]</TextSymbolizer>
+        </Rule>
+        <Rule>
+            <Filter>([highway]='living_street')</Filter>
+            <MinScaleDenominator>2500</MinScaleDenominator>
+            <MaxScaleDenominator>6250</MaxScaleDenominator>
+            <TextSymbolizer fill="rgb(0,0,0)" fontset-name="book-fonts" halo-radius="2" placement="line" size="15" spacing="300">[name]</TextSymbolizer>
+        </Rule>
+        <Rule>
+            <Filter>([highway]='living_street')</Filter>
+            <MaxScaleDenominator>2500</MaxScaleDenominator>
+            <TextSymbolizer fill="rgb(0,0,0)" fontset-name="book-fonts" halo-radius="2" placement="line" size="18" spacing="400">[name]</TextSymbolizer>
         </Rule>
         <Rule>
             <ElseFilter />
@@ -5367,7 +5384,7 @@
             <Parameter name="password">bla</Parameter>
             <Parameter name="port">5432</Parameter>
             <Parameter name="table">
-      (select way,highway,ref,length(ref) as length
+      (select way,highway,ref,char_length(ref) as length
        from planet_osm_roads
        where highway in ('motorway','trunk','primary')
          and ref is not null
@@ -5406,7 +5423,7 @@
             <Parameter name="password">bla</Parameter>
             <Parameter name="port">5432</Parameter>
             <Parameter name="table">
-      (select way,highway,aeroway,name,ref,length,bridge
+      (select way,highway,aeroway,name1 as name,ref,length,bridge
        from road_text
        where name is not null or ref is not null
       ) as roads
